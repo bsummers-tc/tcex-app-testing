@@ -2,6 +2,7 @@
 
 # standard library
 import json
+from typing import cast
 
 # third-party
 from _pytest.config import Config as PytestConfig
@@ -65,7 +66,7 @@ class ProfileRunner(Profile):
         """
         keys = self.redis_client.hkeys(context)
         if keys:
-            return self.redis_client.hdel(context, *keys)  # type: ignore
+            return self.redis_client.hdel(context, *keys)
         return 0
 
     @cached_property
@@ -88,13 +89,12 @@ class ProfileRunner(Profile):
     def context_tracker(self) -> list[str]:
         """Return the current context trackers for Service Apps."""
         if not self._context_tracker and self.tcex_testing_context:
-            self._context_tracker = json.loads(
-                self.redis_client.hget(
-                    self.tcex_testing_context,
-                    '_context_tracker',  # type: ignore
-                )
-                or '[]'
+            # redis_client is synchronous, so hget never returns an Awaitable
+            context_tracker = cast(
+                'str | None',
+                self.redis_client.hget(self.tcex_testing_context, '_context_tracker'),
             )
+            self._context_tracker = json.loads(context_tracker or '[]')
         return self._context_tracker
 
     def validate(self):

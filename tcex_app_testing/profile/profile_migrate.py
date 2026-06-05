@@ -70,7 +70,7 @@ class ProfileMigrate:
         """
         for input_type in ['optional', 'required']:
             for k in dict(contents.get('inputs', {}).get(input_type, {})):
-                if k in config_model.schema().get('properties'):
+                if k in config_model.schema().get('properties', {}):
                     contents['inputs'].setdefault('defaults', {})
                     contents['inputs']['defaults'][k] = contents['inputs'][input_type].pop(k)
 

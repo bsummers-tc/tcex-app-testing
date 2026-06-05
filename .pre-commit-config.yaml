@@ -48,54 +48,44 @@ repos:
       - id: pyupgrade
         args:
           - --py311-plus
+  - repo: https://github.com/google/osv-scanner/
+    rev: v2.3.8
+    hooks:
+      - id: osv-scanner
+        args:
+          - --lockfile
+          - uv.lock
+  # ty, ruff, and ruff-format each run once over the whole project. The tools
+  # discover and descend into the nested git submodules themselves (applying each
+  # submodule's own pyproject.toml), so no separate per-submodule hooks are needed.
+  # `types_or: [..., directory]` makes a hook fire on a changed submodule pointer
+  # as well as on changed Python files; `pass_filenames: false` lets each tool
+  # scan the tree using its own configuration. Tool versions come from uv.lock.
   - repo: local
     hooks:
-      - id: pyright
-        entry: pyright
+      - id: ty
+        entry: ty check
         language: system
-        name: pyright
-        types:
+        name: ty
+        pass_filenames: false
+        types_or:
           - python
-  - repo: local
-    hooks:
-      - id: pyright-submodules
-        entry: pyright
-        language: system
-        name: pyright-submodules
-        # pre-commit types_or and types with multiple values don't work for submodules
-        types:
           - directory
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.5
-    hooks:
       - id: ruff
-        args:
-          - --fix
-        types_or:
-          - python
-          - pyi
-      - id: ruff-format
-        types_or:
-          - python
-          - pyi
-  - repo: local
-    hooks:
-      - id: ruff-submodules
-        entry: ruff
-        args:
-          - check
-          - --fix
+        entry: ruff check --fix
         language: system
-        name: ruff-submodules
-        # pre-commit types_or and types with multiple values don't work for submodules
-        types:
+        name: ruff
+        pass_filenames: false
+        types_or:
+          - python
+          - pyi
           - directory
-      - id: ruff-format-submodules
-        entry: ruff
-        args:
-          - format
+      - id: ruff-format
+        entry: ruff format
         language: system
-        name: ruff-format-submodules
-        # pre-commit types_or and types with multiple values don't work for submodules
-        types:
+        name: ruff-format
+        pass_filenames: false
+        types_or:
+          - python
+          - pyi
           - directory

@@ -22,26 +22,26 @@ classifiers = [
 
 dependencies = [
   "arrow>=1.3.0",
-  "black>=25.1.0",
-  "deepdiff>=8.2.0",
-  "fakeredis>=2.27.0",
+  "black>=26.3.1",
+  "deepdiff>=8.6.2",
+  "fakeredis>=2.36.0",
   "hvac>=2.3.0",
   "inflection>=0.5.1",
   "isort>=6.0.0",
   "jmespath>=1.0.1",
-  "mako>=1.3.9",
+  "mako>=1.3.12",
   "paho-mqtt<3.0.0",
   "pyaes>=1.6.1",
   "pydantic<2.0.0",
-  "pytest>=8.3.4",
+  "pytest>=9.0.3",
   "pytest-cov>=6.0.0",
   "pytest-html>=4.1.1",
   "pytest-xdist>=3.6.1",
   "python-dateutil>=2.9.0",
   "python-dotenv>=1.0.1",
   "pyyaml>=6.0.2",
-  "redis<5.0.0",
-  "requests>=2.32.3",
+  "redis~=8.0.0",
+  "requests>=2.33.0",
   "responses>=0.25.6",
   "rich>=13.9.4",
   "semantic-version>=2.10.0",
@@ -64,11 +64,11 @@ Source = "https://github.com/ThreatConnect-Inc/tcex-app-testing"
 
 [dependency-groups]
 dev = [
-  "bandit>=1.8.3",
-  "pre-commit>=4.1.0",
-  "pyright>=1.1.394",
-  "pyupgrade>=3.19.1",
-  "ruff>=0.9.7",
+  "bandit>=1.9.4",
+  "pre-commit>=4.6.0",
+  "pyupgrade>=3.21.2",
+  "ruff>=0.15.16",
+  "ty~=0.0.43",
 ]
 
 [tool.setuptools.dynamic]
@@ -94,7 +94,7 @@ commit = false
 # Additional arguments to pass to the git commit command
 commit_args = "--no-verify"
 # The current version of the project
-current_version = "1.0.2-dev0"
+current_version = "1.0.2-dev1"
 # The commit message template used when committing version bumps
 message = "Version updated from {current_version} to {new_version}"
 # Regular expression for parsing version strings
@@ -133,7 +133,7 @@ filename = "tcex_app_testing/__metadata__.py"
 # https://streetsidesoftware.com/vscode-spell-checker/
 
 # ignore-words-list=
-skip = "*.cspell*,*.history,*local,uv.lock"
+skip = "*.cspell*,*.history,*local,uv.lock,*enforce_us_spelling.sh"
 
 [tool.isort]
 dedup_headings = false
@@ -147,21 +147,19 @@ known_third_party = ""
 line_length = 100
 profile = "black"
 
-[tool.pyright]
-# https://github.com/microsoft/pyright/blob/main/docs/configuration.md#sample-pyprojecttoml-file
+# Configuration for ty type checker
+# https://docs.astral.sh/ty/reference/configuration/
+[tool.ty.environment]
+python-platform = "linux"
+python-version = "3.11"
 
+[tool.ty.src]
 exclude = [
   "**/.history",
   "**/__pycache__",
   "**/local-*",
-  "tcex/api/tc/v2",
   "tests",
 ]
-pythonPlatform = "Linux"
-pythonVersion = "3.11"
-reportIncompatibleMethodOverride = false
-reportIncompatibleVariableOverride = false
-reportPrivateImportUsage = false
 
 [tool.pytest.ini_options]
 filterwarnings = []

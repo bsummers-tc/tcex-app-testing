@@ -5,6 +5,7 @@ import logging
 import ssl
 import time
 from collections.abc import Callable
+from typing import cast
 
 # third-party
 import paho.mqtt.client as mqtt
@@ -218,9 +219,12 @@ class MqttMessageBroker:
         for cd in self._on_message_callbacks:
             # if there are no topic restrictions, or the current message
             # topic is in the list of restrictions, call the callback
-            topics = cd.get('topics')
-            if (topics in ([], None) or message.topic in topics) and callable(cd['callback']):
-                cd['callback'](client, userdata, message)
+            topics = cast('list[str] | None', cd.get('topics'))
+            callback = cd['callback']
+            if not callable(callback):
+                continue
+            if topics is None or topics == [] or message.topic in topics:
+                cast('Callable', callback)(client, userdata, message)
 
     def on_publish(self, client, userdata, mid, rc, properties):
         """Handle MQTT on_publish events."""

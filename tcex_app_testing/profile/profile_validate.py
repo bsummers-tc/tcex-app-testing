@@ -2,7 +2,7 @@
 
 # standard library
 import json
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 # first-party
 from tcex_app_testing.config_model import config_model
@@ -93,13 +93,12 @@ class ProfileValidate:
 
         for context in self.profile.context_tracker:
             context_keys = [
-                k.decode('utf-8')
-                for k in self.redis_client.hkeys(context)  # type: ignore
+                cast('bytes', k).decode('utf-8') for k in self.redis_client.hkeys(context)
             ]
             self.log.info(f'step=validate, event=validate-outputs, context-keys={context_keys}')
             for variable in self.profile.tc_playbook_out_variables:
                 # get data from redis for current context
-                data = self.redis_client.hget(context, variable.encode('utf-8'))  # type: ignore
+                data = self.redis_client.hget(context, variable.encode('utf-8'))
 
                 # TODO: does this need to use playbooks?
                 if data is not None:

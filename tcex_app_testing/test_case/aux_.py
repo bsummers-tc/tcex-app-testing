@@ -39,7 +39,7 @@ from tcex_app_testing.util import Util
 from tcex_app_testing.validator import Validator
 
 # disable ssl warning message
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)  # type: ignore
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # get logger
 _logger = logging.getLogger(__name__.split('.', maxsplit=1)[0])

@@ -45,7 +45,7 @@ class StagerKvstore:
                     variable,
                     data_,  # type: ignore
                     validate=False,
-                    when_requested=False,  # type: ignore
+                    when_requested=False,
                 )
 
     def stage(
@@ -60,7 +60,7 @@ class StagerKvstore:
         """Delete data in redis"""
         keys = self.redis_client.hkeys(context)
         if keys:
-            return self.redis_client.hdel(context, *keys)  # type: ignore
+            return self.redis_client.hdel(context, *keys)
         return 0
 
     @staticmethod

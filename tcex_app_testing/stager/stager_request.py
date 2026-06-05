@@ -129,7 +129,7 @@ class StagerRequest:
     def base_path(self):
         """Return the base path"""
         test_path = Path(os.getenv('PYTEST_CURRENT_TEST')).parent  # type: ignore
-        return test_path / Path('staged_requests')  # type: ignore
+        return test_path / Path('staged_requests')
 
     def record_all(self, recorded_data) -> None:
         """Record all requests."""
@@ -171,7 +171,7 @@ class StagerRequest:
                 responses.add_callback(
                     getattr(responses, key_),
                     url=request_.url,
-                    callback=callback,  # type: ignore
+                    callback=callback,
                     match_querystring=match_querystring,
                 )
                 responses.add(

@@ -123,7 +123,7 @@ class ProfileUpdate:
             redis_data = self.redis_client.hgetall(context)
 
             # updated outputs with validation data
-            self._generate_output_data(outputs, redis_data)  # type: ignore
+            self._generate_output_data(outputs, redis_data)
 
             # cleanup redis
             self.profile.clear_context(context)

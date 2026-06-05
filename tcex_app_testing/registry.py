@@ -49,7 +49,7 @@ class Registry(Container):
         Args:
             method: A instance method to add to the registry.
         """
-        self._add(method.__name__, method)
+        self._add(getattr(method, '__name__', repr(method)), method)
 
     def add_factory(self, type_or_name: str | type, factory: Callable, singleton=False):
         """Add a factory for a service.

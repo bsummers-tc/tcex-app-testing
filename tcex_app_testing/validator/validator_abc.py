@@ -52,7 +52,7 @@ class ValidatorABC(ABC):
 
                 with contextlib.suppress(json.JSONDecodeError, TypeError, ValueError):
                     # APP-599 - best effort try to stringify value in list
-                    ad_ = json.loads(ad_)  # type: ignore
+                    ad_ = json.loads(ad_)
 
                 data_updated.append(ad_)
             return data_updated
@@ -596,5 +596,5 @@ class ValidatorABC(ABC):
         return app_data.startswith(test_data), ''
 
     @abstractmethod
-    def remove_excludes(self, dict_1: dict | list, paths: list) -> dict:
+    def remove_excludes(self, dict_1: dict | list, paths: list) -> dict | list:
         """Remove a list of paths from a given dict"""
